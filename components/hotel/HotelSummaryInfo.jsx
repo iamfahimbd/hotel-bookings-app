@@ -2,7 +2,20 @@ import Link from "next/link";
 import HotelRating from "./HotelRating";
 import HotelReviewNumber from "./HotelReviewNumber";
 
-export default function HotelSummaryInfo({ fromListPage, info }) {
+export default function HotelSummaryInfo({
+  fromListPage,
+  info,
+  checkin,
+  checkout,
+}) {
+  let params = "";
+  if (checkin && checkout) {
+    params = `?checkin=${checkin}&checkout=${checkout}`;
+  }
+  console.log("checkin from hotlesumm: ", checkin);
+  console.log("checkout from hotlesumm : ", checkout);
+  console.log("params from hotlesumm : ", params);
+
   return (
     <>
       <div className={fromListPage ? "flex-1" : "flex-1 container"}>
@@ -15,6 +28,15 @@ export default function HotelSummaryInfo({ fromListPage, info }) {
         <div className="flex gap-2 items-center my-4">
           <HotelRating id={info?.id} />
           <HotelReviewNumber id={info?.id} />
+          <span
+            className={`font-semibold ${
+              info?.isBooked
+                ? "bg-red-500 text-white"
+                : "bg-green-400 p-1 text-white rounded-sm"
+            }`}
+          >
+            {info?.isBooked ? "Booked" : "Available"}
+          </span>
         </div>
         <div>
           <span className="bg-orange-300 p-1 rounded-md text-sm font-medium">
@@ -29,9 +51,16 @@ export default function HotelSummaryInfo({ fromListPage, info }) {
         </h2>
         <p className=" text-right">Per Night for 1 Room</p>
         {fromListPage ? (
-          <Link href={`/hotels/${info?.id}`} className="btn-primary ">Details</Link>
+          <Link href={`/hotels/${info?.id}${params}`} className="btn-primary ">
+            Details
+          </Link>
         ) : (
-          <button className="btn-primary ">Book</button>
+          <Link
+            href={info?.isBooked ? "#" : `/hotels/${info.id}/payment${params}`}
+            className={info?.isBooked ? "btn-disabled" : "btn-primary"}
+          >
+            Book
+          </Link>
         )}
       </div>
     </>
