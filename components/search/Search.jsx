@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function sSearch({ fromList, destination, checkin, checkout }) {
+export default function Search({ fromList, destination, checkin, checkout }) {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
